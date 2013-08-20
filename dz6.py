@@ -79,7 +79,7 @@ centralities = {}
 lac = len(actors)
 cnt = 1
 
-start =  datetime.now()
+start = datetime.now()
 for actor in actors.keys():
     print "Proccessed %d from %d" % (cnt, lac)
     centralities[actor] = centrality(G, actor)
