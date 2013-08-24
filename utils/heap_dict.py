@@ -13,10 +13,14 @@ def left(i):
 
 
 def parent(i):
+    if i == 0:
+        return 0
     return (i-1)/2
 
 
 def up_heapify(heap, index):
+    # if index == 0:
+    #     return heap
     if heap[index][0] >= heap[parent(index)][0]:
         return heap
     else:
@@ -39,11 +43,15 @@ def down_heapify(heap, index):
         return down_heapify(heap, right(index))
 
 
+def append_to_heap(heap, item):
+    heap.append(item)
+    return up_heapify(heap, len(heap)-1)
+
+
 def make_heap(array):
     heap = []
     for i in array:
-        heap.append(i)
-        up_heapify(heap, len(heap)-1)
+        append_to_heap(heap, i)
     return heap
 
 
@@ -53,3 +61,12 @@ def pop_heap(heap):
     del heap[-1]
     down_heapify(heap, 0)
     return result
+
+
+def heap_replace(heap, index, elem):
+    if heap[parent(index)][0] >= elem:
+        heap[index] = elem
+        up_heapify(heap, index)
+    else:
+        heap[index] = elem
+        down_heapify(heap, index)

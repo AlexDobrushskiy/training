@@ -33,8 +33,11 @@ def dijkstra(G, v):
                     heap_dict.up_heapify(heap, len(heap)-1)
                 elif final_dist[w] + G[w][x] < dist_so_far[x]:
                     dist_so_far[x] = final_dist[w] + G[w][x]
-                    heap.append((dist_so_far[x], x))
-                    heap_dict.up_heapify(heap, len(heap)-1)
+                    for i in range(len(heap)):
+                        if heap[i][1] == x:
+                            index = i
+                            break
+                    heap_dict.heap_replace(heap, index, (dist_so_far[x], x))
     return final_dist
 
 
