@@ -33,6 +33,10 @@ def down_heapify(heap, index):
         return heap
     if left(index) == len(heap)-1 and heap[index] <= heap[left(index)]:
         return heap
+    elif left(index) == len(heap)-1 and heap[index] > heap[left(index)]:
+        heap[index], heap[left(index)] = heap[left(index)], heap[index]
+        return heap
+
     if heap[index][0] <= heap[left(index)][0] and heap[index][0] <= heap[right(index)][0]:
         return heap
     if heap[index][0] > heap[left(index)][0]:
@@ -56,6 +60,8 @@ def make_heap(array):
 
 
 def pop_heap(heap):
+    if not heap:
+        return None
     result = heap[0]
     heap[0] = heap[-1]
     del heap[-1]
