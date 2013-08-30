@@ -4,6 +4,7 @@ __author__ = 'Alex Dobrushskiy'
 
 import re
 from utils.dijkstra import dijkstra
+from utils.paths import shortest_paths
 
 
 def make_link(G, node1, node2):
@@ -60,4 +61,48 @@ search_list = ['SPIDER-MAN/PETER PAR',
                'PROFESSOR X/CHARLES ',
                'CAPTAIN AMERICA']
 
-dist = dijkstra(new_G, search_list[0])
+G = simple_G
+
+total_result = 0
+
+for i in search_list:
+    dist = dijkstra(new_G, search_list[0])
+    paths = shortest_paths(G, i)
+
+    costed_paths = {}
+    for j in paths:
+        cost = 0
+        for index in range(len(paths[j])-2):
+            node1 = paths[j][index]
+            node2 = paths[j][index+1]
+            cost += new_G[node1][node2]
+        costed_paths[j] = cost
+
+    total_list = []
+    for i in costed_paths.keys():
+        if dist[i] != costed_paths[i]:
+            total_list.append(i)
+
+    print len(total_list)
+    total_result += len(total_list)
+
+print total_result
+
+
+####################################################################
+#Let's calculate all shortest paths for current node
+
+# Let make the path a list of nodes we need to visit, like that:
+# ['A', 'D', 'F', 'G']  <--- from 'A' node to 'G' node
+
+# So the result will be a dictionary with nodes as a keys
+# And path-lists as a values, like so:
+# {'A': ['A'], 'G' : ['A', 'D', 'F', 'G']}
+
+# G is a graph
+# v is a node to start from
+
+
+
+
+
