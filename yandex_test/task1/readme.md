@@ -33,26 +33,26 @@ root@alex-VirtualBox:/home/alex/TESTS/training/yandex_test/task1# cat input.dat
 
 
 
-
+<lots of empty string here>
 a
 
 d
 
 v
 
-
+<lots of empty string here>
 asd
 aa
 qqq
 
 
-
+<lots of empty string here>
 wwww
 
 sdf
 
 
-
+<lots of empty string here>
 
 
 
