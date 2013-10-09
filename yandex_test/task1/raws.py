@@ -20,7 +20,7 @@ def proccess_raws(input):
     empty_string_flag = False
     for item in input:
         # remove line engings symbol
-        if item[-1] == '\n':
+        if len(item) > 0 and item[-1] == '\n':
             item = item[:-1]
         if item:
             if begin_flag:
