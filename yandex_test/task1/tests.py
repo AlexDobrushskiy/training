@@ -14,3 +14,5 @@ class Task1Test(unittest.TestCase):
         result = proccess_raws(self.input_list)
         self.assertEqual(result, ["a", "b", "", "c", "", "d"])
 
+if __name__ == '__main__':
+    unittest.main()
