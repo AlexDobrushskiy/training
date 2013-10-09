@@ -9,22 +9,30 @@ from random import choice
 
 class Task1Test(unittest.TestCase):
     def setUp(self):
-        self.input_list = ["", "", "", "a", "b", "", "", "c", "", "d", "", "", ""]
-
-    def test_sanity(self):
-        result = proccess_raws(self.input_list)
-        self.assertEqual(result, ["a", "b", "", "c", "", "d"])
+        self.elements = ["", "a", "", "b", "", "c"]
 
     def test_long_list(self):
-        elements = ["", "a", "", "b", "", "c"]
-        input = [choice(elements) for i in range(10000)]
+        input = [choice(self.elements) for i in range(10000)]
         result = proccess_raws(input)
-        self.assertNotEqual(result[0], "")
-        self.assertNotEqual(result[-1], "")
-        for i in range(len(result)):
-            if result[i] == "":
-                self.assertNotEqual(result[i-1], "")
-                self.assertNotEqual(result[i+1], "")
+
+        previous = ""
+        for i in result:
+            if i == "":
+                self.assertNotEqual(previous, "")
+            previous = i
+
+    def test_generator_input(self):
+        def input_generator():
+            for i in range(10000):
+                yield choice(self.elements)
+
+        result = proccess_raws(input_generator())
+
+        previous = ""
+        for i in result:
+            if i == "":
+                self.assertNotEqual(previous, "")
+            previous = i
 
 
 if __name__ == '__main__':
