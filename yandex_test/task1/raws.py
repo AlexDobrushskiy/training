@@ -19,12 +19,15 @@ def proccess_raws(input):
     begin_flag = True
     empty_string_flag = False
     for item in input:
+        # remove line engings symbol
+        if item[-1] == '\n':
+            item = item[:-1]
         if item:
             if begin_flag:
                 begin_flag = False
             if empty_string_flag:
-                yield ""
                 empty_string_flag = False
+                yield ""
             yield item
         else:
             if not begin_flag:
