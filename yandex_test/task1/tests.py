@@ -11,7 +11,7 @@ class Task1Test(unittest.TestCase):
     def setUp(self):
         self.elements = ["", "a", "", "b", "", "c"]
 
-    def test_long_list(self):
+    def test_long_list_input(self):
         input = [choice(self.elements) for i in range(10000)]
         result = proccess_raws(input)
 

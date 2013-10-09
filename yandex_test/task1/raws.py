@@ -2,6 +2,8 @@
 # -*- coding: utf-8 -*-
 __author__ = 'Alex Dobrushskiy'
 
+import sys
+
 __all__ = ('proccess_raws', )
 
 
@@ -29,5 +31,7 @@ def proccess_raws(input):
                 empty_string_flag = True
 
 
-
-
+if __name__ == '__main__':
+    for raw in proccess_raws(sys.stdin):
+        #default output will use stdout
+        print raw
