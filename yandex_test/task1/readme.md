@@ -1,3 +1,5 @@
+This module eliminates begining and ending empty strings, and compresses internal sequences of empty string to one empty string.
+
 Usage:
 root@alex-VirtualBox:/home/alex/TESTS/training/yandex_test/task1# cat input.dat | python raws.py > ouput.dat
 
