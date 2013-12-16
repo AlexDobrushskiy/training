@@ -33,60 +33,61 @@ def read_graph(filename):
 
     return G, heroes, books
 
-G, heroes, books = read_graph('marvel')
+if __name__ == '__main__':
 
-new_G = {}
+    G, heroes, books = read_graph('marvel')
 
-for node in G.keys():
-    if node in heroes:
-        for book in G[node]:
-            for hero in G[book]:
-                if node != hero:
-                    make_link(new_G, node, hero)
+    new_G = {}
 
+    for node in G.keys():
+        if node in heroes:
+            for book in G[node]:
+                for hero in G[book]:
+                    if node != hero:
+                        make_link(new_G, node, hero)
 
-print len(new_G)
-# let simple_G be the unweighted graph
-simple_G = new_G
+    print len(new_G)
+    # let simple_G be the unweighted graph
+    simple_G = new_G
 
-for i in new_G:
-    for j in new_G[i]:
-        new_G[i][j] = 1./new_G[i][j]
-print len(new_G)
-# Now new_G is weighted graph. The smallest weight means the minimum cost of path
+    for i in new_G:
+        for j in new_G[i]:
+            new_G[i][j] = 1./new_G[i][j]
+    print len(new_G)
+    # Now new_G is weighted graph. The smallest weight means the minimum cost of path
 
-search_list = ['SPIDER-MAN/PETER PAR',
-               'GREEN GOBLIN/NORMAN ',
-               'WOLVERINE/LOGAN ',
-               'PROFESSOR X/CHARLES ',
-               'CAPTAIN AMERICA']
+    search_list = ['SPIDER-MAN/PETER PAR',
+                   'GREEN GOBLIN/NORMAN ',
+                   'WOLVERINE/LOGAN ',
+                   'PROFESSOR X/CHARLES ',
+                   'CAPTAIN AMERICA']
 
-G = simple_G
+    G = simple_G
 
-total_result = 0
+    total_result = 0
 
-for i in search_list:
-    dist = dijkstra(new_G, search_list[0])
-    paths = shortest_paths(G, i)
+    for i in search_list:
+        dist = dijkstra(new_G, search_list[0])
+        paths = shortest_paths(G, i)
 
-    costed_paths = {}
-    for j in paths:
-        cost = 0
-        for index in range(len(paths[j])-2):
-            node1 = paths[j][index]
-            node2 = paths[j][index+1]
-            cost += new_G[node1][node2]
-        costed_paths[j] = cost
+        costed_paths = {}
+        for j in paths:
+            cost = 0
+            for index in range(len(paths[j])-2):
+                node1 = paths[j][index]
+                node2 = paths[j][index+1]
+                cost += new_G[node1][node2]
+            costed_paths[j] = cost
 
-    total_list = []
-    for i in costed_paths.keys():
-        if dist[i] != costed_paths[i]:
-            total_list.append(i)
+        total_list = []
+        for i in costed_paths.keys():
+            if dist[i] != costed_paths[i]:
+                total_list.append(i)
 
-    print len(total_list)
-    total_result += len(total_list)
+        print len(total_list)
+        total_result += len(total_list)
 
-print total_result
+    print total_result
 
 
 ####################################################################
