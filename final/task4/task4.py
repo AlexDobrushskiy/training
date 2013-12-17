@@ -25,6 +25,9 @@
 # 6 hours and 23 minutes. There maybe be even better flights, but
 # you'll have to search the graph to find them.
 #
+from pprint import PrettyPrinter
+
+
 def calc_timedelta(start, end):
      end = end.split(':')
      end_min = int(end[0])*60 + int(end[1])
@@ -33,29 +36,39 @@ def calc_timedelta(start, end):
      return end_min-start_min
 
 
+def calc_minutes(tm):
+     tm = tm.split(':')
+     return int(tm[0])*60 + int(tm[1])     
+
+
 def build_flight_graph(flights):
      """
-     {flight_no: [cost, start, finish]}
-     # G = {'a': {'b':{100:[...], 101:[...], ...}}}     
+     {'a': {101:[30, 325], ...}, 101: {'b': [0, 355]}}
+     f[0]    f[1]       f[2]    f[3]     f[4]   f[5]
+     (523, 'Broome', 'Derby', '07:17', '08:57', 60)
+     HH:MM time is converted to total minutes from midnight.
      """
 
      G = {}
      for f in flights:
           if f[1] not in G:
-               G[f[1]] = {}
-          if f[2] not in G[f[1]]:
-               G[f[1]][f[2]] = {}
-          fli = G[f[1]][f[2]]
-
-          fli[f[0]] = [f[5], f[3], f[4]]
+               G[f[1]] = {f[0]: [calc_minutes(f[3]), f[5]]}
+          else:
+               G[f[1]][f[0]] = [calc_minutes(f[3]), f[5]]
+          if f[0] not in G:
+               G[f[0]] = {f[2]: [calc_minutes(f[4]), 0]}
+          else:
+               assert False
 
      return G
 
 
 def dijkstra(G, v):
      """
-     {flight_no: [cost, start, finish]}
-     # G = {'a': {'b':{100:[...], 101:[...], ...}}}      
+     {from: {f_no:[dep, time]}, f_no: {to:[arr, time]}}
+     timedelta = G[f_no][to][1] - G[from][f_no][1]
+
+     # {'a': {101:[30, 325], ...}, 101: {'b': [0, 355]}}      
      """
      # init section
      # ---------------------------------------
@@ -70,8 +83,8 @@ def dijkstra(G, v):
      while to_visit:
           node, dist = to_visit.pop()
           for i in G[node]:
-               if (dist + G[node][i]) < cost[i]:
-                    cost[i] = dist + G[node][i]
+               if (dist + G[node][i][1]) < cost[i]:
+                    cost[i] = dist + G[node][i][1]
                     paths[i] = paths[node] + [i]
                for j in to_visit:
                     if j[0] == i:
@@ -283,4 +296,18 @@ def test():
     assert flights == [391, 459]
 
 # print calc_timedelta('7:20', '10:40')
-print build_flight_graph(all_flights)
+
+G = build_flight_graph(all_flights)
+result, path = dijkstra(G, 'Broome')
+res1 = {}
+for i in result:
+     if isinstance(i, str) and result[i] < 99999999999999999999999999:
+          res1[i] = result[i], path[i]
+
+pp = PrettyPrinter(indent=4)
+pp.pprint(res1)
+
+# print result
+# print G['Broome']
+# print G[523]
+# print G
